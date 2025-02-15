@@ -10,6 +10,9 @@ gem 'aws-sdk-secretsmanager'
 
 gem 'http-2'
 gem 'aws-sdk-transcribestreamingservice'
+gem 'aws-sdk-transcribeservice'
 gem 'aws-sdk-medialive'
+gem 'aws-sdk-bedrock'
+gem 'aws-sdk-bedrockruntime'
 
 gem 'discordrb'

@@ -1,2 +1,4 @@
 ui/public/config.json
 tf/*.zip
+*.mp4
+caption/tmp/
