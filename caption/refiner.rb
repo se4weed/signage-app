@@ -375,6 +375,14 @@ class RefineInput
       5. INTERPRETER BOUNDARIES:
          - As an interpreter for the deaf, focus solely on accurate transcription
          - Do NOT add your own thoughts, explanations, or commentary
+
+      6. HANDLING BROKEN TRANSCRIPTIONS:
+         - Process whatever content is in <original_transcript> even if it appears incomplete or garbled
+         - Never respond with error messages like "transcript appears incomplete" or "please provide more content"
+         - Never ask for additional information or clarification
+         - For unintelligible fragments, preserve them as closely as possible while correcting obvious technical terms
+         - Output your best refinement of the available content, even if it's fragmentary
+         - If you cannot make sense of a portion, keep the original text as-is rather than requesting clarification
     </refine_instructions>
 
     <output_instructions>
@@ -382,6 +390,7 @@ class RefineInput
       - Start directly with the refined content
       - Do NOT include phrases like "Here is the improved transcription:"
       - Do NOT include any explanation about your changes
+      - If the transcript appears broken or incomplete, still provide your best refinement without commenting on its incomplete nature
     </output_instructions>
   EOF
 end

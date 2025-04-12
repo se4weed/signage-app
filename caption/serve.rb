@@ -201,6 +201,7 @@ class IotDataPlaneOutput < GenericOutput
 
     payload = {
       kind: "Caption",
+      source: caption.source,
       track: @track,
       pid: $$,
       sequence_id: sequence.id,
@@ -208,7 +209,6 @@ class IotDataPlaneOutput < GenericOutput
       result_id: sequence.result_id,
       is_partial: caption.is_partial,
       transcript: caption.transcript,
-      source: caption.source,
     }
     @iotdataplane.publish(
       topic: @topic,
