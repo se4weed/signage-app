@@ -186,7 +186,7 @@ class IotDataPlaneOutput < GenericOutput
     @topic = "#{topic_prefix}/uplink/all/captions/#{track}"
     @iotdataplane = Aws::IoTDataPlane::Client.new(logger: Logger.new($stdout))
 
-    @next_sequence_num = Time.now.to_i << 20
+    @next_sequence_num = (Time.now.to_i - 1578000000) << 20
     @sequence_map = {}
 
     super()
