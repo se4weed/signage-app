@@ -112,6 +112,9 @@ export type ScreenControlFull = {
   track: TrackSlug;
   mode: ScreenMode;
 
+  main_caption?: CaptionSource;
+  subscreen_caption?: CaptionSource;
+
   rotated_views: ScreenViewKind[];
 
   show_sponsors: boolean;
