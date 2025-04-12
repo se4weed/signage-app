@@ -219,8 +219,8 @@ class IotDataPlaneOutput < GenericOutput
 
     unless caption.is_partial
       sequence.complete = true
-      @sequence_map.each_value.select(&:complete).sort_by { -_1.id }[50..-1]&.each do |seq|
-        @sequence_map.delete(caption.result_id)
+      if @sequence_map.size > 1000
+        @sequence_map.shift
       end
     end
   end
