@@ -39,7 +39,9 @@ export const TrackCaption: React.FC<{ track: TrackSlug }> = ({ track }) => {
         case "Caption": {
           const newCaptions = captions;
           const existingCaptionIdx = newCaptions.findIndex(
-            (c) => payload.sequence_id === c.sequence_id
+            (c) =>
+              payload.sequence_id === c.sequence_id &&
+              payload.source === c.source
           );
           let isNew = false;
           if (existingCaptionIdx < 0) {
@@ -90,7 +92,7 @@ export const TrackCaption: React.FC<{ track: TrackSlug }> = ({ track }) => {
         />
       </>
     );
-  }, [apictx?.config?.iot_topic_prefix, track]);
+  }, [apictx, track, onMessage]);
 
   const lastcaption =
     captions.length > 0 ? captions[captions.length - 1] : undefined;
