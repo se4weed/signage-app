@@ -1,3 +1,4 @@
+# Backport of the work made at https://github.com/tokyorubykaigi12/captioner which is a fork of this work.
 require 'anthropic'
 require 'aws-sdk-bedrockruntime'
 require 'logger'
@@ -43,6 +44,35 @@ class Refiner
     end
   end
 
+  def make_sentences(text, is_partial: true)
+    sentences = text.scan(/.+?(?:[^\d]\.\s+|[\?!]$|\.\s+|\z)/)
+    sentences.inject([]) do |r,i|
+      if r.empty?
+        r << i
+      else
+        if i.split(/\s+/).size < 3
+          r.last << i
+        else
+          r << i
+        end
+      end
+      r
+    end
+
+    remainder = sentences.pop #if !sentences.empty? && !sentences.last.match?(/(?:[^\d]\.|[\?!])\s*\z/)
+    unless is_partial
+      sentences.push(remainder) if remainder
+      remainder = nil
+    end
+    if sentences.empty?
+      remainder = text
+    end
+
+    p(text:)
+    p(sentences:,remainder:)
+    [sentences, remainder]
+  end
+
   def refine(caption, use_latest: false, &callback)
     @lock.synchronize do
       switch_key()
@@ -57,25 +87,15 @@ class Refiner
         @captions[caption.result_id] = caption
       end
 
-      sentences = caption.transcript.scan(/.+?(?:[^\d]\.|[\?!]$|\.\s+|\z)/)
-      remainder = sentences.pop if !sentences.empty? && !sentences.last.match?(/(?:[^\d]\.|[\?!])\s*\z/)
-
-      unless caption.is_partial
-        sentences.push(remainder) if remainder
-        remainder = nil
-      end
-      if sentences.empty?
-        remainder = caption.transcript
-      end
-      p(sentences:,remainder:)
+      sentences, remainder = make_sentences(caption.transcript, is_partial: caption.is_partial)
 
       full_sentence = caption.is_partial ? nil : (@cache.cache(caption.transcript) do
         dispatch_refinement(caption, caption.transcript, &callback)
       end)
       refined_sentences = sentences.map do |sentence|
-        @cache.cache(sentence) do
+        @cache.cache(sentence, prevent_fetch: !!full_sentence) do
           dispatch_refinement(caption, sentence, &callback)
-        end
+        end || RefineData.new(RefineInput.new(session: @session, log: @log, schedule: @schedule, sentence:), nil)
       end
 
       output = CaptionData.new(
@@ -118,10 +138,11 @@ class MiniCache
     @storage = {}
   end
 
-  def cache(key, &block)
+  def cache(key, prevent_fetch: false, &block)
     if val = @storage[key]
       return val
     else
+      return nil if prevent_fetch
       # Remove oldest entry if we're at capacity
       if @storage.size >= MAX_SIZE
         @storage.shift # remove oldest entry
@@ -176,6 +197,7 @@ class AnthropicBackend < RefineBackend
   end
 
   def process(item)
+    t = Time.now
     p request: item.data
     response = @anthropic.messages(
       parameters: {
@@ -187,7 +209,7 @@ class AnthropicBackend < RefineBackend
       }
     )
     item.data.result = response.fetch("content").dig(0, 'text')
-    p response: item.data
+    p took: Time.now-t, response: item.data
     item.callback.call(item.data)
     nil
   end
@@ -199,7 +221,7 @@ class BedrockBackend < RefineBackend
     super()
   end
 
-  def process(data)
+  def process(item)
     begin
       # TODO: Configure temperature etc
       invocation = @bedrock.invoke_model(
@@ -209,7 +231,8 @@ class BedrockBackend < RefineBackend
         body: JSON.generate({
           anthropic_version: "bedrock-2023-05-31",
           max_tokens: 1000,
-          messages: generate_messages(transcript),
+          system: itme.data.input.system,
+          messages: item.data.input.messages,
         })
       )
     rescue Aws::BedrockRuntime::Errors::ServiceError => e
@@ -222,6 +245,7 @@ class BedrockBackend < RefineBackend
     response = response_io.string
 
     data.result = JSON.parse(response)["content"].first["text"]
+    item.callback.call(item.data)
     nil
   end
 end
