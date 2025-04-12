@@ -1,13 +1,18 @@
+$stdout.sync = true
 require 'socket'
 require 'logger'
+require 'fileutils'
 require 'thread'
 
 require 'aws-sdk-iotdataplane'
 require 'aws-sdk-transcribestreamingservice'
 require 'json'
 
-# ffmpeg -i ... -vn -f s16le -ar 16000 -ac 1 - | ruby serve.rb a |& tee -a /tmp/serve
-# ffmpeg -i udp://0.0.0.0:10000 -f mpegts -c:a pcm_s16le -vn -f s16le -ar 16000 -ac 1 - | ruby serve.rb a |& tee -a /tmp/serve
+require_relative './refiner'
+require_relative './schedule'
+
+# ffmpeg -i ... -vn -f s16le -ar 44100 -ac 1 - | ruby serve.rb a |& tee -a /tmp/serve
+# ffmpeg -i udp://0.0.0.0:10000 -f mpegts -c:a pcm_s16le -vn -f s16le -ar 44100 -ac 1 - | ruby serve.rb a |& tee -a /tmp/serve
 class StdinInput
   def initialize
     @on_data = proc { }
@@ -23,7 +28,7 @@ class StdinInput
       $stdin.binmode
       $stderr.puts({binmode?: $stdin.binmode?}.inspect)
       until $stdin.eof?
-        buf = $stdin.read(32000) # 256Kb
+        buf = $stdin.read(87500/2)
         @on_data.call buf
       end
     end.tap { _1.abort_on_exception = true }
@@ -47,7 +52,7 @@ class TranscribeEngine
 
   attr_reader :output_stream
 
-  def feed(audio_chunk)
+  def feed_audio(audio_chunk)
     @input_stream.signal_audio_event_event(audio_chunk: audio_chunk)
     self
   rescue Seahorse::Client::Http2ConnectionClosedError
@@ -58,7 +63,8 @@ class TranscribeEngine
   end
 
   def start
-    vocabulary_name = ENV.fetch('TRANSCRIBE_VOCABULARY_NAME', 'rk_2021_words')
+    vocabulary_name = ENV.fetch('TRANSCRIBE_VOCABULARY_NAME', 'rk_2025_words')
+    language_model_name = ENV.fetch('TRANSCRIBE_LANGUAGE_MODEL_NAME', 'rk2025w')
     vocabulary_name = nil if vocabulary_name.empty?
     @client.start_stream_transcription(
       language_code: ENV.fetch('TRANSCRIBE_LANGUAGE_CODE', 'en-US'),
@@ -67,9 +73,10 @@ class TranscribeEngine
       partial_results_stability: 'high',
 
       media_encoding: "pcm",
-      media_sample_rate_hertz: 16000,
+      media_sample_rate_hertz: 44100,
 
-      vocabulary_name: vocabulary_name,
+      vocabulary_name:,
+      language_model_name:,
 
       input_event_stream_handler: @input_stream,
       output_event_stream_handler: @output_stream,
@@ -86,26 +93,36 @@ class TranscribeEngine
   end
 end
 
-CaptionData = Data.define(:result_id, :is_partial, :transcript)
+CaptionData = Data.define(:result_id, :is_partial, :transcript, :source)
 
 class GenericOutput
   def initialize()
-   @data_lock = Mutex.new
+    @data_lock = Mutex.new
     @data = {}
   end
 
-  def feed(event)
+  def feed_transcribe_event(event)
+    captions = event.transcript.results.map do |result|
+      CaptionData.new(
+        result_id: result.result_id,
+        is_partial: result.is_partial,
+        transcript: result.alternatives[0]&.transcript,
+        source: :transcribe,
+      )
+    end
+    feed(*captions)
+  end
+
+  def feed(*captions)
     @data_lock.synchronize do
-      event.transcript.results.each do |result|
-        caption = CaptionData.new(
-          result_id: result.result_id,
-          is_partial: result.is_partial,
-          transcript: result.alternatives[0]&.transcript,
-        )
-        @data[result.result_id] = caption if caption.transcript
+      captions.each do |caption|
+        @data[caption.result_id] ||= {}
+        @data[caption.result_id][caption.source] = caption if caption.transcript
       end
     end
   end
+
+  def interval = 0.7
 
   def start
     @th = Thread.new do
@@ -117,16 +134,51 @@ class GenericOutput
             @data = {}
           end
 
-          data.each do |k, caption|
-            handle(caption)
+          data.each do |k, captions|
+            captions.each do |_source, caption|
+              handle(caption)
+            end
           end
         end
-        sleep 0.7
+        sleep interval
+      rescue => e
+        warn e.full_message
+        raise
       end
     end.tap { _1.abort_on_exception = true }
   end
 end
 
+class CopyOutput < GenericOutput
+  def initialize(outputs:)
+    @outputs = outputs
+    super()
+  end
+
+  def feed(*captions)
+    @outputs.each do |output|
+      output.feed(*captions)
+    end
+  end
+
+  def start; end
+end
+
+class RefinerOutput < GenericOutput
+  def initialize(refiner, output)
+    @refiner = refiner
+    @output = output
+    super()
+  end
+
+  def interval = 0.7
+
+  def handle(caption)
+    @refiner.refine(caption) do |output|
+      @output.feed(output)
+    end
+  end
+end
 
 class IotDataPlaneOutput < GenericOutput
   def initialize(topic_prefix:, track:)
@@ -140,19 +192,23 @@ class IotDataPlaneOutput < GenericOutput
     super()
   end
 
+  def interval = 0.35
+
   def handle(caption)
-    sequence = get_sequence_info(caption.result_id)
-    sequence.round += 1
+    sequence = get_sequence_info(caption.source, caption.result_id)
+    sequence.rounds[caption.source] ||= 0
+    round = sequence.rounds[caption.source] += 1
 
     payload = {
       kind: "Caption",
       track: @track,
       pid: $$,
       sequence_id: sequence.id,
-      round: sequence.round,
+      round:,
       result_id: sequence.result_id,
       is_partial: caption.is_partial,
       transcript: caption.transcript,
+      source: caption.source,
     }
     @iotdataplane.publish(
       topic: @topic,
@@ -161,14 +217,19 @@ class IotDataPlaneOutput < GenericOutput
       payload: JSON.generate(payload),
     )
 
-    @sequence_map.delete(caption.result_id) unless caption.is_partial
+    unless caption.is_partial
+      sequence.complete = true
+      @sequence_map.each_value.select(&:complete).sort_by { -_1.id }[50..-1]&.each do |seq|
+        @sequence_map.delete(caption.result_id)
+      end
+    end
   end
 
-  SequenceInfo = Struct.new(:id, :result_id, :round)
-  def get_sequence_info(result_id)
+  SequenceInfo = Struct.new(:id, :result_id, :rounds, :complete)
+  def get_sequence_info(source,result_id)
     @sequence_map[result_id] ||= begin
       @next_sequence_num = @next_sequence_num.succ & 9007199254740991 # Number.MAX_SAFE_INTEGER
-      SequenceInfo.new(@next_sequence_num, result_id, 0)
+      SequenceInfo.new(@next_sequence_num, result_id, {}, false)
     end
   end
 end
@@ -221,21 +282,40 @@ watchdog.start()
 
 input = StdinInput.new
 engine = TranscribeEngine.new
-output = topic_prefix && track ? IotDataPlaneOutput.new(topic_prefix:, track:) : StderrOutput.new
+schedule = Schedule.new()
+
+refine_backend = AnthropicBackend.new
+refine_backend.start
+refiner = Refiner.new(backend: refine_backend, schedule:, track:)
+
+final_output = topic_prefix && track ? IotDataPlaneOutput.new(topic_prefix:, track:) : StderrOutput.new
+refiner_output = RefinerOutput.new(refiner, final_output)
+output = CopyOutput.new(outputs: [final_output, refiner_output])
+
+FileUtils.mkdir_p 'tmp'
+
+p schedule_current: schedule.current(track:)
 
 input.on_data do |chunk|
-  p now: Time.now, on_audio: chunk.bytesize
-  engine.feed(chunk)
+  #p(now: Time.now, on_audio: chunk.bytesize)
+  engine.feed_audio(chunk)
+rescue => e
+  warn e.full_message
+  raise
 end
 
 engine.on_transcript_event do |e|
   watchdog&.alive!
-  output.feed(e)
+  output.feed_transcribe_event(e)
+rescue => e
+  warn e.full_message
+  raise
 end
 # TODO: graceful restart
 
 begin
-  output.start
+  refiner_output.start
+  final_output.start
   call = engine.start
   input.start
   p call.wait.inspect

@@ -85,7 +85,6 @@ session_data = <<~EOF
     <title>#{talk.fetch('title')}</title>
     <abstract>#{talk.fetch('description')}</abstract
   </session>
-
 EOF
 
 session_speakers.each do |speaker|

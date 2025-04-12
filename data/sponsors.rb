@@ -22,7 +22,7 @@ eligible_sponsors.each_with_index do |sponsor, order_index|
     id:,
     plan: sponsor.fetch(:base_plan),
     name: sponsor.fetch(:name),
-    avatar_url: "https://rubykaigi.org/2024/images/sponsors/#{sponsor.fetch(:asset_file_id)}@3x.png",
+    avatar_url: "https://rubykaigi.org/2025/images/sponsors/#{sponsor.fetch(:asset_file_id)}@3x.png",
     order_index:,
     updated_at:,
   }

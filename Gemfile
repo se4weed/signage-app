@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'nokogiri'
+gem 'bigdecimal'
 
 gem 'aws-sdk-iot'
 gem 'aws-sdk-iotdataplane'
@@ -16,3 +17,4 @@ gem 'aws-sdk-bedrock'
 gem 'aws-sdk-bedrockruntime'
 
 gem 'discordrb'
+gem 'ruby-anthropic'
