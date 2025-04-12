@@ -41,9 +41,8 @@ export const ControlLightningTimerPage: React.FC = () => {
         <TabPanels>
           {config.tracks.map((slug) => {
             return (
-              <TabPanel>
+              <TabPanel key={slug}>
                 <Box
-                  key={slug}
                   border="1px solid"
                   borderColor={Colors.chatBorder2}
                   backgroundColor="white"
