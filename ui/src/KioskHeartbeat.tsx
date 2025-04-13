@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { ApiContext, useApiContext } from "./ApiContext";
 import {
   Mqtt5MessageReceivedEvent,
@@ -26,8 +26,8 @@ export const KioskHeartbeat: React.FC = () => {
   const [lastHeartbeatAt, setLastHeartbeatAt] = useState<number | undefined>(
     undefined
   );
-  const cb = useMemo(() => {
-    return (message: PubsubMessage, event: Mqtt5MessageReceivedEvent) => {
+  const cb = useCallback(
+    (message: PubsubMessage, event: Mqtt5MessageReceivedEvent) => {
       const payload = guardApiPubsubMessage(message.payload);
       if (!payload) return;
 
@@ -37,8 +37,9 @@ export const KioskHeartbeat: React.FC = () => {
           break;
         }
       }
-    };
-  }, [setLastHeartbeatAt]);
+    },
+    [setLastHeartbeatAt]
+  );
 
   useEffect(() => {
     console.log("heartbeat timer", [bootedAt, ctx]);
