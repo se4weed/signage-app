@@ -1,0 +1,320 @@
+A.B.I.	ABI
+abstract-syntax-tree	abstract syntax tree
+Action-Cable	Action Cable
+Action-Controller	Action Controller
+Action-Pack	Action Pack
+Action-Record	Action Record
+Active-Record	Active Record
+Active-Support	Active Support
+A.M.D.-sixty-four	AMD64
+A.P.I.	API
+Apple-Silicon	Apple Silicon
+A.P.T.	Apt
+A.R.M.-thirty-two	ARM32
+A.R.M.-sixty-four	ARM64
+A.S.A.N.	ASAN
+A.S.C.I.I.	ASCII
+A.S.C.I.I.-art	ASCII art
+asset	asset
+A.S.T.	AST
+a-sync	async
+A-sync	Async
+asynchronously	asynchronously
+A-sync-H.T.T.P.	Async HTTP
+A-sync-scheduler	Async scheduler
+A-sync-Service	Async Service
+a-sync-signal-safe	async signal safe
+A.W.S.	AWS
+back-trace	backtrace
+benchmarking	benchmarking
+Big-Number	BigNum
+bounding-box	bounding box
+bugs-ruby-lang-org	bugs.ruby-lang.org
+building-blocks	building blocks
+bundle-install	bundle install
+bundle-er	Bundler
+by-bug	Byebug
+byte-code	bytecode
+C.	C
+call-C.C.	callcc
+C.-A.P.I.	C API
+C.D.N.	CDN
+C.-extension	C extension
+C.-extensions	C extensions
+C.-function	C function
+C.G.I.	CGI
+Chat-G.P.T.	ChatGPT
+child-Reactor	child Ractor
+chrome-ium	Chromium
+C.I.	CI
+C.-lang	Clang
+C.L.I.	CLI
+clip-py	Clippy
+C.P.U.	CPU
+C.-Python	CPython
+C.-Ruby	CRuby
+C.S.R.F.	CSRF
+C.-string	C string
+Data-dog	Datadog
+D.D.-trace	ddtrace
+Debian	Debian
+developer-experience	developer experience
+D.H.H.	DHH
+Discord	Discord
+Discourse	Discourse
+D.N.S.	DNS
+Docker	Docker
+D.O.M.	DOM
+enumerator	enumerator
+E.R.B.	ERB
+Falcon	Falcon
+Fast-ly	Fastly
+F.F.I.	FFI
+Fiber	Fiber
+Fibonacci	Fibonacci
+Fire-fox	Firefox
+Float	Float
+Float-specialized-instructions	Float specialized instructions
+F.P.S.	FPS
+garbage-collection	garbage collection
+garbage-collector	garbage collector
+G.C.	GC
+G.C.C.	GCC
+gem	gem
+gem-file	Gemfile
+gem-spec	gemspec
+gem-specification	gem specification
+Git-Hub	GitHub
+Git-Hub-Actions	GitHub Actions
+Git-lab	Gitlab
+git-log	git log
+Go	Go
+Grail	Graal
+Grail-V.M.	GraalVM
+gradual-typing	gradual typing
+Graph-Q.L.	GraphQL
+G.R.P.C.	gRPC
+G.U.I.	GUI
+Gusto	Gusto
+G.V.L.	GVL
+heap-vis	heapvis
+Home-brew	Homebrew
+H.T.M.L.	HTML
+H.T.M.L.-five	HTML5
+H.T.T.P.	HTTP
+H.T.T.P.-one	HTTP/1
+H.T.T.P.-two	HTTP/2
+I.D.E.	IDE
+incremental-marking	incremental marking
+inheritance	inheritance
+inline-cache	inline cache
+inline-caches	inline caches
+inline-type-annotations	inline type annotations
+innumerable	innumerable
+I.N.S.N.S.-def	INSNS.def
+instance-eval	instance eval
+instance-variables	instance variables
+instant-variables	instant variables
+Intel-X.-eighty-six	Intel X86
+Intel-x.-eighty-six-sixty-four	Intel x86_64
+interpolation	interpolation
+I.O.	IO
+I.O.-buffer	I/O buffer
+I.O.-hooks	I/O hooks
+I.O.-reads	I/O reads
+I.O.-timeout	I/O timeout
+I.O.-writes	I/O writes
+I.P.-address	IP address
+I.S.E.Q.	ISEQ
+I.-var	Ivar
+Java	Java
+Java-Script	JavaScript
+Java-virtual-machine	Java virtual machine
+J.I.T.	JIT
+J.I.T.-compiler	JIT compiler
+J.-Ruby	JRuby
+J.-Ruby-ten	JRuby 10
+J.S.O.N.	JSON
+J.S.O.N.-C.	JSONC
+J.V.M.	JVM
+J.V.M.s	JVMs
+kernel-threads	kernel threads
+keyword-splat	keyword splat
+Koichi-san	Koichi-san
+Kokubun-san	Kokubun-san
+Kondo-san	Kondo-san
+kram-down	kramdown
+language-server-protocol	language server protocol
+large-language-models	large language models
+level-one-cache	level one cache
+lib-back-trace	libbacktrace
+lib-F.F.I.	libffi
+Lib-yaml	LibYAML
+Linter	Linter
+Linux	Linux
+L.L.V.M.	LLVM
+local-variable-substitution	local variable substitution
+mac-O.S.	macOS
+main-Reactor	main Ractor
+mal-loc	malloc
+Marshal	Marshal
+Marshal-dump	Marshal dump
+Marshal-dot-load	Marshal.load
+Mastodon	Mastodon
+matrix	matrix
+Matz	Matz
+mem-check	memcheck
+memory-mapped-I.O.	memory-mapped I/O
+memory-monitoring	memory monitoring
+Message-Pack	MessagePack
+meta-programming	meta programming
+milliseconds	milliseconds
+Mini-Test	MiniTest
+M.J.I.T.	MJIT
+M.-to-N.	M:N
+M.-to-N.-threads	M:N threads
+M.-to-N.-thread-scheduler	M:N thread scheduler
+M.N.-thread-scheduler	MN thread scheduler
+monkey-patch	monkey patch
+Mozilla	Mozilla
+M.R.I.	MRI
+my-sequel	MySQL
+N.E.S.	NES
+N.-jinx	Nginx
+Node-dot-J.S.	Node.js
+no-ko-giri	Nokogiri
+null-terminator	null terminator
+object-space	object space
+Object-Space	ObjectSpace
+Opal	Opal
+Open-J.D.K.	OpenJDK
+Open-S.S.L.	OpenSSL
+operand	operand
+opt-carrot	optcarrot
+optimizer	optimizer
+Optional-type	Optional type
+O.W.A.S.P.	OWASP
+pa-drino	Padrino
+parallel-tests	parallel tests
+P.D.F.	PDF
+Perf	Perf
+performance-regression	performance regression
+P.F.-two	Pf2
+po-ke	Pocke
+portfolio	portfolio
+P.O.S.	POS
+positional-argument	positional argument
+positional-splat-parameter	positional splat parameter
+post-gres	postgres
+P.P.	PP
+P.-prof	pprof
+P.R.	PR
+prepend	prepend
+Prism	Prism
+proto-buf	Protobuf
+Protocol-Buffers	Protocol Buffers
+pry	pry
+pseudo-code	pseudocode
+Puma	Puma
+pure-Ruby	pure Ruby
+Python	Python
+Q.R.-code	QR code
+rack	Rack
+Reactor	Ractor
+Rails	Rails
+Rails-seven	Rails 7
+Rails-seven-dot-one	Rails 7.1
+Rails-eight	Rails 8
+Rails-at-scale	Rails at scale
+R.A.M.	RAM
+R.B.I.	RBI
+R.B.S.	RBS
+R.B.S.-collection	RBS collection
+R.B.S.-prototype	RBS prototype
+R.B.S.-rails	rbs_rails
+R.-Doc	RDoc
+Red-Hat	Red Hat
+reg-ex	regex
+regular-expression	regular expression
+Ripper	Ripper
+R.-Spec	RSpec
+R.T.L.	RTL
+Rubo-cop	RuboCop
+Ruby	Ruby
+Ruby-one-dot-eight-dot-seven	Ruby 1.8.7
+Ruby-one-dot-nine	Ruby 1.9
+Ruby-two-dot-three	Ruby 2.3
+Ruby-two-dot-four	Ruby 2.4
+Ruby-two-dot-five	Ruby 2.5
+Ruby-two-dot-six	Ruby 2.6
+Ruby-two-dot-seven	Ruby 2.7
+Ruby-three-dot-zero	Ruby 3.0
+Ruby-three-dot-one	Ruby 3.1
+Ruby-three-dot-two	Ruby 3.2
+Ruby-three-dot-three	Ruby 3.3
+Ruby-three-dot-four	Ruby 3.4
+Ruby-Association	Ruby Association
+Ruby-Central	Ruby Central
+Ruby-core	Ruby Core
+ruby-slash-debug	ruby/debug
+Ruby-debug	Ruby debug
+Ruby-gems	RubyGems
+Ruby-Gems-dot-org	RubyGems.org
+Ruby-ist	Rubyist
+Ruby-ists	Rubyists
+Ruby-Kaigi	RubyKaigi
+Ruby-L.S.P.	Ruby LSP
+Ruby-on-Rails	Ruby on Rails
+Ruby-virtual-machine	Ruby virtual machine
+Ruby-V.M.	Ruby VM
+Ruby-dot-wasm	Ruby.wasm
+rust	Rust
+Rust-Analyzer	Rust Analyzer
+Rust-up	Rustup
+sampling-profiler	sampling profiler
+seg-fault	seg fault
+segmentation-fault	segmentation fault
+S.-expressions	S-expressions
+Shop-if-y	Shopify
+signal-safe	signal-safe
+sin-at-ra	Sinatra
+sor-bet	Sorbet
+splat-parameter	splat parameter
+S.Q.L.	SQL
+stack-overflow	stack overflow
+stack-prof	stackprof
+Steep	Steep
+Stripe	Stripe
+tap-i-oca	Tapioca
+test-unit	test-unit
+T.L.D.R.	TLDR
+Trace-Point	TracePoint
+triple-equals	triple equals
+Truffle-Ruby	TruffleRuby
+type-checker	type checker
+type-checkers	type checkers
+type-definition	type definition
+Type-Prof	TypeProf
+Type-Script	TypeScript
+Unicorn	Unicorn
+upstream	upstream
+use-after-free	use after free
+Val-grind	Valgrind
+variable-width-allocation	variable width allocation
+Vernier	Vernier
+virtual-threads	virtual threads
+Vladimir-Makarov	Vladimir Makarov
+V.M.	VM
+W.A.S.I.	WASI
+web-assembly	Wasm
+W.A.S.M.	WASM
+Web-Assembly	WebAssembly
+Web-Socket	WebSocket
+White-quark	Whitequark
+write-barrier	write barrier
+x.-eighty-six	x86
+X.M.L.	XML
+Y.A.M.L.	YAML
+Y.A.R.V.	YARV
+Y.J.I.T.	YJIT
+Z.-lib	zlib

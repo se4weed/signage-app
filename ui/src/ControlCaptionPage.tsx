@@ -15,12 +15,11 @@ import {
 } from "@chakra-ui/react";
 import { Text } from "@chakra-ui/react";
 
+import ControlCaptionTrack from "./ControlCaptionTrack";
 import { Api } from "./Api";
-//import ControlScreenForm from "./ControlScreenForm";
 import { Colors } from "./theme";
-import ControlLightningTimerTrack from "./ControlLightningTimerTrack";
 
-export const ControlLightningTimerPage: React.FC = () => {
+export const ControlCaptionPage: React.FC = () => {
   const { data: config } = Api.useConfig();
 
   if (!config)
@@ -53,7 +52,10 @@ export const ControlLightningTimerPage: React.FC = () => {
                   mx={[3, 3, 1, 1]}
                   p={4}
                 >
-                  <ControlLightningTimerTrack track={slug} />
+                  <Flex>
+                    <ControlCaptionTrack track={slug} source="transcribe" />
+                    <ControlCaptionTrack track={slug} source="refiner" />
+                  </Flex>
                 </Box>
               </TabPanel>
             );
@@ -65,4 +67,4 @@ export const ControlLightningTimerPage: React.FC = () => {
 
   //  return <Box>{/*<ControlScreenForm />*/}</Box>;
 };
-export default ControlLightningTimerPage;
+export default ControlCaptionPage;

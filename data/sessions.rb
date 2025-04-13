@@ -2,9 +2,15 @@ require 'yaml'
 require 'aws-sdk-dynamodb'
 
 TRACKS = {
+  'Open Studio' => :c,
+
   'Large Hall' => :a,
   'Small Hall' => :b,
   'Large Studio' => :c,
+
+  'Main Hall' => :a,
+  'Sub Hall' => :b,
+  'Pearls Room' => :c,
 }
 
 @dynamodb = Aws::DynamoDB::Client.new
@@ -41,6 +47,7 @@ schedule.each do |day, day_data| # day = "may15"
         ends_at: end_ts.to_i,
         track:,
         hall:,
+        description: presentation.fetch('description', ''),
         title: presentation.fetch('title'),
         speakers: presentation.fetch('speakers',[]).map do |speaker_info|
           id = speaker_info.fetch('id')
@@ -48,6 +55,7 @@ schedule.each do |day, day_data| # day = "may15"
           {
             slug: id,
             name: speaker.fetch('name'),
+            bio: speaker.fetch('bio'),
             github_id: speaker.fetch('github_id', nil),
             twitter_id: speaker.fetch('twitter_id', nil),
             avatar_url: "https://gravatar.com/avatar/#{speaker.fetch('gravatar_hash')}?s=512", # TODO:

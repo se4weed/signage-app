@@ -112,6 +112,9 @@ export type ScreenControlFull = {
   track: TrackSlug;
   mode: ScreenMode;
 
+  main_caption?: CaptionSource;
+  subscreen_caption?: CaptionSource;
+
   rotated_views: ScreenViewKind[];
 
   show_sponsors: boolean;
@@ -430,10 +433,12 @@ function dynamodbKiosk(possibleItem: Record<string, AttributeValue>): Kiosk {
   };
 }
 
+export type CaptionSource = "transcribe" | "refiner";
 export type CaptionMessage = PubsubMessageHeader & {
   kind: "Caption";
   track: TrackSlug;
   pid: number;
+  source: CaptionSource;
   sequence_id: number;
   round: number;
   result_id: string;

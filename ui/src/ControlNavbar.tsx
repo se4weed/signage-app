@@ -26,6 +26,9 @@ export const ControlNavbar: React.FC = () => {
         <Link as={RouterLink} to="/control/timers">
           Timers
         </Link>
+        <Link as={RouterLink} to="/control/caption">
+          Caption
+        </Link>
         <Link as={RouterLink} to="/control/kiosks">
           Kiosks
         </Link>
