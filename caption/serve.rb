@@ -11,8 +11,8 @@ require 'json'
 require_relative './refiner'
 require_relative './schedule'
 
-# ffmpeg -i ... -vn -f s16le -ar 44100 -ac 1 - | ruby serve.rb a |& tee -a /tmp/serve
-# ffmpeg -i udp://0.0.0.0:10000 -f mpegts -c:a pcm_s16le -vn -f s16le -ar 44100 -ac 1 - | ruby serve.rb a |& tee -a /tmp/serve
+# ffmpeg -i ... -vn -f s16le -ar 16000 -ac 1 - | ruby serve.rb a |& tee -a /tmp/serve
+# ffmpeg -i udp://0.0.0.0:10000 -f mpegts -c:a pcm_s16le -vn -f s16le -ar 16000 -ac 1 - | ruby serve.rb a |& tee -a /tmp/serve
 class StdinInput
   def initialize
     @on_data = proc { }
@@ -28,7 +28,7 @@ class StdinInput
       $stdin.binmode
       $stderr.puts({binmode?: $stdin.binmode?}.inspect)
       until $stdin.eof?
-        buf = $stdin.read(87500/2)
+        buf = $stdin.read(32000/2)
         @on_data.call buf
       end
     end.tap { _1.abort_on_exception = true }
@@ -73,7 +73,7 @@ class TranscribeEngine
       partial_results_stability: 'high',
 
       media_encoding: "pcm",
-      media_sample_rate_hertz: 44100,
+      media_sample_rate_hertz: 16000,
 
       vocabulary_name:,
       language_model_name:,

@@ -168,7 +168,7 @@ class RefineBackend
     @ths = nil
   end
 
-  def threads = 2
+  def threads = 5
 
   def start
     @ths = threads.times.map do
