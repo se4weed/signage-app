@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useApiContext } from "./ApiContext";
 import Api, { ScreenViewKind, VenueAnnouncement } from "./Api";
-import { ScreenHeroFiller } from "./ScreenHeroFiller";
+import { ScreenHeroIconFiller } from "./ScreenHeroFiller";
 import { ScreenVenueAnnouncementView } from "./ScreenVenueAnnouncementView";
 import { useKioskContext } from "./KioskProvider";
 import { useTick } from "./TickProvider";
@@ -80,14 +80,14 @@ export const ScreenRotationView: React.FC = () => {
     console.log("ScreenRotationView/page", { idx, total: pages.length }, page);
   }, [idx, page, pages.length]);
 
-  if (pages.length == 0) return <ScreenHeroFiller />;
-  if (page === undefined) return <ScreenHeroFiller />;
+  if (pages.length == 0) return <ScreenHeroIconFiller />;
+  if (page === undefined) return <ScreenHeroIconFiller />;
 
   // XXX: dupe with ScreenAnnounceView Inner
   //
   return (
     <>
-      {page.kind === "hero" ? <ScreenHeroFiller /> : null}
+      {page.kind === "hero" ? <ScreenHeroIconFiller /> : null}
       {page.kind === "venue_announcements" ? (
         <ScreenVenueAnnouncementView ann={page.ann} />
       ) : null}

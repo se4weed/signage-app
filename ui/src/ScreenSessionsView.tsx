@@ -17,7 +17,7 @@ import { Api, ConferenceSession, Speaker } from "./Api";
 import { Colors, Fonts, ScreenFonts } from "./theme";
 import { Logo } from "./Logo";
 
-import { ScreenHeroFiller } from "./ScreenHeroFiller";
+import { ScreenHeroFiller, ScreenHeroIconFiller } from "./ScreenHeroFiller";
 
 import { useRelativeTime } from "./ScreenAnnounceTime";
 import { useApiContext } from "./ApiContext";
@@ -48,7 +48,7 @@ export const ScreenSessionsView: React.FC = () => {
   }
   const relativeTime = useRelativeTime(earliestStartUnix);
 
-  if (!recentSessions) return <ScreenHeroFiller />; // FIXME:
+  if (!recentSessions) return <ScreenHeroIconFiller />; // FIXME:
 
   const state: ConferenceStateAssumption | undefined = (() => {
     if (!recentSessions) return undefined;
@@ -80,7 +80,7 @@ export const ScreenSessionsView: React.FC = () => {
 
   //console.log("ScreenSessionsView/state", state);
 
-  if (state === "end_of_day") return <ScreenHeroFiller />; // FIXME:
+  if (state === "end_of_day") return <ScreenHeroIconFiller />; // FIXME:
 
   return (
     <Flex

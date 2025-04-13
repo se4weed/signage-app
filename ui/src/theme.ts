@@ -17,7 +17,7 @@ export const Colors = {
 
   controlBg: "#f8f8f8",
   backgroundColor: "#f8f8f8",
-  bg: "#ffec00", // 2024 yellow
+  bg: "#fd4d00", // 2025 red
   secondary: "#7C757D",
   secondaryText: "#767077",
 
@@ -43,7 +43,7 @@ export const Colors = {
 };
 
 export const Fonts = {
-  heading: "Poppins",
+  heading: "Lexend",
   body: "Roboto",
 };
 
@@ -125,8 +125,8 @@ export const theme = extendTheme({
   },
 });
 
-const screenMain = "#000000"; // 2024 main
-const screenAccent = "#ffec00"; // 2024 yellow
+const screenMain = "#000000"; // 2025 main
+const screenAccent = "#fd4d00"; // 2025 red
 export const ScreenColors = {
   ...Colors,
   main: screenMain, // 2024
@@ -135,7 +135,7 @@ export const ScreenColors = {
 };
 export const ScreenFonts = {
   ...Fonts,
-  heading: "Dela Gothic One",
-  body: "Poppins",
-  timer: "Poppins",
+  heading: "Lexend", // 2025
+  body: "Lexend", // 2025
+  timer: "Lexend", // 2025
 };

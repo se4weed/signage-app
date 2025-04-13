@@ -25,7 +25,7 @@ export const ScreenSponsorRotation: React.FC = () => {
       <Center>
         <VStack spacing="2.8vw">
           <Text
-            fontWeight="500"
+            fontWeight="900" // rk25
             fontSize="2vw"
             lineHeight="4.6vw"
             fontFamily={ScreenFonts.heading}

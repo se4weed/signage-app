@@ -59,7 +59,7 @@ export const NahaThemedFillerPaddingX: React.FC<{ mode: ScreenMode }> = ({
   mode,
 }) => {
   return (
-    <Box w="5vw" flexGrow={2}>
+    <Box minW="5.7vw" flexGrow={2}>
       {mode === "filler" ? (
         // fixme: unused code
         <Box w="100%" h="100%" bgColor={ScreenColors.accent}></Box>
@@ -84,20 +84,21 @@ export const IntermissionScreenInner: React.FC = () => {
         {screen.mode !== "filler" ? (
           <NahaThemedFillerPaddingX mode={screen.mode} />
         ) : null}
+        {screen.mode === "filler" ? (
+          <Box w="100%" h="100%" bgColor={ScreenColors.accent}>
+            <ScreenHeroFiller />
+          </Box>
+        ) : (
+          <Box h="100%" w="100%" flexGrow={3}>
+            <NahaThemedLetterBox>
+              {screen.mode === "message" && screen.message ? (
+                <ScreenMessageView screen={screen} />
+              ) : null}
+              {screen.mode === "rotation" ? <ScreenRotationView /> : null}
+            </NahaThemedLetterBox>
+          </Box>
+        )}
 
-        <Box h="100%" w="100%" flexGrow={3}>
-          <NahaThemedLetterBox>
-            {screen.mode === "message" && screen.message ? (
-              <ScreenMessageView screen={screen} />
-            ) : null}
-            {screen.mode === "rotation" ? <ScreenRotationView /> : null}
-            {screen.mode === "filler" ? (
-              <Box w="100%" h="100%" bgColor={ScreenColors.accent}>
-                <ScreenHeroFiller />
-              </Box>
-            ) : null}
-          </NahaThemedLetterBox>
-        </Box>
         {screen.show_sponsors ? (
           <Box h="100%">
             <NahaThemedLetterBox
@@ -109,12 +110,9 @@ export const IntermissionScreenInner: React.FC = () => {
             </NahaThemedLetterBox>
           </Box>
         ) : null}
-        {screen.mode !== "filler" ? (
-          <NahaThemedFillerPaddingX mode={screen.mode} />
-        ) : null}
       </Flex>
       <>
-        {/* Bottom-left 'RubyKaigi 2024' logo */}
+        {/* Bottom-left 'RubyKaigi 2025' logo */}
         <Box
           display={screen.mode === "filler" ? "none" : "block"}
           position="absolute"

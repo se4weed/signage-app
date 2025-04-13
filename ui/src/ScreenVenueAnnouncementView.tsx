@@ -31,7 +31,11 @@ export const ScreenVenueAnnouncementView: React.FC<{
           fontFamily={ScreenFonts.body}
           ml="1vw"
         >
-          <Text fontWeight="500" fontSize="3vw" lineHeight="5vw">
+          <Text
+            fontWeight="500" // rk25
+            fontSize="3vw"
+            lineHeight="5vw"
+          >
             {returnToBr(ann.content)}
           </Text>
         </Flex>

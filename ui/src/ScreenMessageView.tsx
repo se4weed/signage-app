@@ -40,7 +40,7 @@ const AnnounceBasic: React.FC<{ message: ScreenControlMessage }> = ({
       <Box>
         {message.heading ? (
           <Text
-            fontWeight="400"
+            fontWeight="900" // rk25
             fontSize="4vw"
             lineHeight="6vw"
             fontFamily={ScreenFonts.heading}
