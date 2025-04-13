@@ -277,6 +277,8 @@ end
 topic_prefix, track = ARGV[0,2]
 warn "Usage for IoT: #$0 topic_prefix track" unless topic_prefix && track
 
+FileUtils.mkdir_p 'tmp'
+
 watchdog = Watchdog.new(enabled: ARGV.delete('--watchdog'))
 watchdog.start()
 
@@ -291,8 +293,6 @@ refiner = Refiner.new(backend: refine_backend, schedule:, track:)
 final_output = topic_prefix && track ? IotDataPlaneOutput.new(topic_prefix:, track:) : StderrOutput.new
 refiner_output = RefinerOutput.new(refiner, final_output)
 output = CopyOutput.new(outputs: [final_output, refiner_output])
-
-FileUtils.mkdir_p 'tmp'
 
 p schedule_current: schedule.current(track:)
 
