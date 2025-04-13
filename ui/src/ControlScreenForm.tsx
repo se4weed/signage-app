@@ -37,6 +37,7 @@ import {
 
 import {
   Api,
+  CaptionSource,
   ScreenControl,
   ScreenControlFull,
   ScreenMode,
@@ -53,6 +54,9 @@ type FormData = {
   show_sessions: boolean;
 
   show_sponsors: boolean;
+
+  main_caption: CaptionSource;
+  subscreen_caption: "" | "off" | CaptionSource;
 
   intermission: boolean;
 
@@ -80,7 +84,11 @@ function serverDataToFormData(input: ScreenControl): FormData {
 
     show_sponsors: input.show_sponsors,
 
+    main_caption: input.main_caption ?? "refiner",
+    subscreen_caption: input.subscreen_caption ?? "off",
+
     intermission: input.intermission,
+
     message: {
       heading: input.message?.heading ?? "",
       footer: input.message?.footer ?? "",
@@ -103,6 +111,11 @@ function formDataToInput(
     rotated_views,
     show_sponsors: form.show_sponsors,
     intermission: form.intermission,
+    main_caption: form.main_caption,
+    subscreen_caption:
+      form.subscreen_caption === "off" || form.subscreen_caption === ""
+        ? undefined
+        : form.subscreen_caption,
     message:
       form.mode === "message" || form.message.heading || form.message.footer
         ? form.message
@@ -202,9 +215,22 @@ export const ControlScreenForm: React.FC<{
             </Tabs>
 
             <FormControl>
-              <FormLabel>
-                Intermission mode (hide captions on subscreen)
-              </FormLabel>
+              <FormLabel>Subscreen Caption</FormLabel>
+              <Select {...register("subscreen_caption")}>
+                <option value="off">Off</option>
+                <option value="refiner">Refiner</option>
+                <option value="transcribe">Transcribe</option>
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Mainscreen Caption</FormLabel>
+              <Select {...register("main_caption")}>
+                <option value="refiner">Refiner</option>
+                <option value="transcribe">Transcribe</option>
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Intermission mode</FormLabel>
               <Checkbox {...register("intermission")} />
             </FormControl>
             <FormControl>

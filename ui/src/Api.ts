@@ -172,6 +172,12 @@ function dynamodbScreenControl(
             expires_at: Number(map?.expires_at?.N ?? 0),
           }
         : undefined)(possibleItem?.lightning_timer?.M),
+
+    main_caption: (possibleItem?.main_caption?.S ?? "refiner") as CaptionSource,
+    subscreen_caption: (possibleItem?.subscreen_caption?.S ?? undefined) as
+      | CaptionSource
+      | undefined,
+
     updated_at: Number(possibleItem?.updated_at?.N ?? 0),
   };
   return retval;
@@ -648,7 +654,7 @@ export const Api = {
         TableName: aws.config.dynamodb_table_name,
         Key: { pk: { S: pk }, sk: { S: sk } },
         UpdateExpression:
-          "set #track = :track, #mode = :mode, #rotated_views = :rotated_views, #show_sponsors = :show_sponsors, #intermission = :intermission, #message = :message, #lightning_timer = :lightning_timer, #updated_at = :updated_at",
+          "set #track = :track, #mode = :mode, #rotated_views = :rotated_views, #show_sponsors = :show_sponsors, #intermission = :intermission, #message = :message, #lightning_timer = :lightning_timer, #main_caption = :main_caption, #subscreen_caption = :subscreen_caption, #updated_at = :updated_at",
         ExpressionAttributeNames: {
           "#track": "track",
           "#mode": "mode",
@@ -657,6 +663,8 @@ export const Api = {
           "#intermission": "intermission",
           "#message": "message",
           "#lightning_timer": "lightning_timer",
+          "#main_caption": "main_caption",
+          "#subscreen_caption": "subscreen_caption",
           "#updated_at": "updated_at",
         },
         ExpressionAttributeValues: {
@@ -695,6 +703,10 @@ export const Api = {
                   },
                 },
               }
+            : { NULL: true },
+          ":main_caption": { S: value.main_caption ?? "refiner" },
+          ":subscreen_caption": value.subscreen_caption
+            ? { S: value.subscreen_caption }
             : { NULL: true },
           ":updated_at": { N: dayjs().unix().toString() },
         },
