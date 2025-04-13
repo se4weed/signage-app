@@ -114,6 +114,7 @@ const MainCaptionContent: React.FC<{ captions: CaptionMessage[] }> = ({
             key={`${caption.sequence_id}-${caption.source}`}
             fontWeight={caption.is_partial ? 600 : 400}
             color={i === 0 && !caption.is_partial ? "#707070" : "inherit"}
+            marginRight={"1.5rem"}
           >
             {caption.transcript}{" "}
           </Text>

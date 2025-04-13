@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { Box, Skeleton, Text } from "@chakra-ui/react";
 
@@ -44,8 +45,14 @@ export const TrackCaption: React.FC<Props> = ({ track }) => {
 export const TrackCaptionInner: React.FC<{
   track: TrackSlug;
   captions: CaptionMessage[];
-}> = ({ captions }) => {
+}> = ({ captions: origCaptions }) => {
   const box = React.useRef<HTMLDivElement>(null);
+  const [searchParams] = useSearchParams();
+  const hidePartial = !!searchParams.get("hide_partial");
+
+  const captions = hidePartial
+    ? origCaptions.filter((v) => !v.is_partial)
+    : origCaptions;
 
   const lastcaption =
     captions.length > 0 ? captions[captions.length - 1] : undefined;
