@@ -48,8 +48,9 @@ export const SubScreenInner: React.FC = () => {
 
   const infoMode = ((): InfoMode => {
     if (timer?.shouldVisible) return "lightning_timer";
+    if (screen?.subscreen_caption) return "caption";
     if (screen?.intermission) return "announcement";
-    return "caption";
+    return "announcement";
   })();
 
   return (
@@ -60,18 +61,16 @@ export const SubScreenInner: React.FC = () => {
       direction="column"
       overflow="hidden"
     >
-      {infoMode !== "caption" ? (
-        <Box w="100%" h="30%" overflow="hidden">
-          {infoMode === "announcement" ? (
-            <SubScreenAnnouncementsView track={track} />
-          ) : null}
-          {infoMode === "lightning_timer" && timer ? (
-            <SubScreenLightningTimerView timer={timer} />
-          ) : null}
-        </Box>
-      ) : null}
       <Box w="100%" h="30%" overflow="hidden">
-        <SubScreenCaptionView track={track} />
+        {infoMode === "announcement" ? (
+          <SubScreenAnnouncementsView track={track} />
+        ) : null}
+        {infoMode === "lightning_timer" && timer ? (
+          <SubScreenLightningTimerView timer={timer} />
+        ) : null}
+        {infoMode === "caption" && timer ? (
+          <SubScreenCaptionView track={track} />
+        ) : null}
       </Box>
       <Box w="100%" h="10%" overflow="hidden">
         <SubScreenChatHeader />
