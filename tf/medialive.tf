@@ -1,7 +1,3 @@
-data "aws_iam_role" "MediaLiveAccessRole" {
-  name = "MediaLiveAccessRole"
-}
-
 data "external" "medialive-channel-cfn" {
   program = ["jrsonnet", "--ext-str", "DEFAULT_TAGS=${jsonencode(data.aws_default_tags.current.tags)}", "${path.module}/medialive-cfn/external.jsonnet"]
 }
@@ -23,10 +19,11 @@ resource "aws_cloudformation_stack" "medialive-channel" {
     CaptionerUrl        = "udp://${aws_instance.captioner[0].private_ip}:${each.value.udp_port}"
     Subnet1Id           = var.captioner_params.medialive_subnet_id_1
     Subnet2Id           = var.captioner_params.medialive_subnet_id_2
-    RoleArn             = var.captioner_params.medialive_role_arn
+    RoleArn             = aws_iam_role.Medialive.arn
     VpcSgIds            = join(",", var.captioner_params.medialive_security_group_ids)
     MedialiveSgPublicId = var.captioner_params.medialive_input_security_group_id
     NamePrefix          = var.name_prefix
+    S3UrlBase           = "s3ssl://${var.captioner_params.medialive_s3_bucket}/${var.captioner_params.medialive_s3_prefix}${each.key}/"
   }
 }
 

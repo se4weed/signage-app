@@ -46,7 +46,8 @@ variable "captioner_params" {
     ec2_subnet_id                     = string
     medialive_subnet_id_1             = string
     medialive_subnet_id_2             = string
-    medialive_role_arn                = string
+    medialive_s3_bucket               = string
+    medialive_s3_prefix               = string
     ssh_import_ids                    = optional(set(string), [])
   })
   default = {
@@ -57,7 +58,8 @@ variable "captioner_params" {
     ec2_subnet_id                     = ""
     medialive_subnet_id_1             = ""
     medialive_subnet_id_2             = ""
-    medialive_role_arn                = ""
+    medialive_s3_bucket               = ""
+    medialive_s3_prefix               = ""
   }
 }
 variable "captioner_channels" {
