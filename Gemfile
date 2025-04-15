@@ -8,6 +8,7 @@ gem 'aws-sdk-iotdataplane'
 gem 'aws-sdk-s3'
 gem 'aws-sdk-dynamodb'
 gem 'aws-sdk-secretsmanager'
+gem 'aws-sdk-ssm'
 
 gem 'http-2'
 gem 'aws-sdk-transcribestreamingservice'

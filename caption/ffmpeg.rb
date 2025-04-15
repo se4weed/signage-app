@@ -2,6 +2,12 @@
 port = ARGV[0]
 channel = ARGV[1]
 
+if ENV['SECRETS_FROM_SSM']
+  require 'aws-sdk-ssm'
+  ssm = Aws::SSM::Client.new()
+  ENV['ANTHROPIC_API_KEY'] = ssm.get_parameter(name: '/signage/prd/ANTHROPIC_API_KEY', with_decryption: true).parameter.value
+end
+
 loop do
   p :loop
   IO.popen([*%w(ruby serve.rb signage-prd), channel, out: $stdout, err: $stderr], 'w') do |io|
