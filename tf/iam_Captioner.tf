@@ -59,10 +59,35 @@ data "aws_iam_policy_document" "Captioner" {
 
   statement {
     effect  = "Allow"
+    actions = ["dynamodb:Query"]
+    resources = [
+      aws_dynamodb_table.table.arn,
+      "${aws_dynamodb_table.table.arn}/index/inverted",
+    ]
+  }
+
+
+  statement {
+    effect  = "Allow"
     actions = ["secretsmanager:GetSecretValue"]
     resources = [
       aws_secretsmanager_secret.discord.arn,
     ]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameters",
+    ]
+    resources = ["arn:aws:ssm:*:${data.aws_caller_identity.current.id}:parameter/${var.ssm_parameter_path_prefix}*"]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+    ]
+    resources = [data.aws_kms_key.ssm.arn]
   }
 
   statement {
@@ -105,4 +130,9 @@ resource "aws_iam_instance_profile" "Captioner" {
 resource "aws_iam_role_policy_attachment" "captioner-ssm" {
   role       = aws_iam_role.Captioner.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+
+data "aws_kms_key" "ssm" {
+  key_id = "alias/aws/ssm"
 }

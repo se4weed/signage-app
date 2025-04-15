@@ -88,6 +88,10 @@ variable "github_actions_subs" {
   default = []
 }
 
+variable "ssm_parameter_path_prefix" {
+  type = string
+}
+
 locals {
   callback_urls = toset(setunion(var.callback_urls, ["https://${var.app_domain}/oauth2callback"]))
 }
