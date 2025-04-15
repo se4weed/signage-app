@@ -32,7 +32,7 @@ export const MainCaptionInner: React.FC = () => {
   const { data: screen } = Api.useScreenControl(apictx, track);
 
   const [searchParams] = useSearchParams();
-  const h = searchParams.get("h") ?? "10%";
+  const h = searchParams.get("h") ?? "8.5vh";
   const bgColor = searchParams.get("background_color") ?? "black";
   const dummy = !!searchParams.get("dummy");
 
@@ -65,8 +65,8 @@ const MainCaptionContent: React.FC<{ captions: CaptionMessage[] }> = ({
 }) => {
   const box = React.useRef<HTMLDivElement>(null);
   const [searchParams] = useSearchParams();
-  const fontSize = searchParams.get("font_size") ?? "1.2vw";
-  const lineHeight = searchParams.get("line_height") ?? "1.50vw";
+  const fontSize = searchParams.get("font_size") ?? "2vw";
+  const lineHeight = searchParams.get("line_height") ?? "2.5vw";
 
   const lastCaptions = captions.slice(-4);
 
