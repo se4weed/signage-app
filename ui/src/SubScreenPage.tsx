@@ -76,31 +76,71 @@ export const SubScreenInner: React.FC = () => {
     return "announcement";
   })();
 
-  return (
-    <Flex
-      h="100%"
-      w="100%"
-      justify="space-between"
-      direction="column"
-      overflow="hidden"
-    >
-      <Box w="100%" h="30%" overflow="hidden">
-        {infoMode === "announcement" ? (
-          <SubScreenAnnouncementsView track={track} />
-        ) : null}
-        {infoMode === "lightning_timer" && timer ? (
-          <SubScreenLightningTimerView timer={timer} />
-        ) : null}
-        {infoMode === "caption" ? <SubScreenCaptionView track={track} /> : null}
-      </Box>
-      <Box w="100%" h="10%" overflow="hidden">
-        <SubScreenChatHeader />
-      </Box>
-      <Box w="100%" flexGrow={2}>
-        <SubScreenChatView track={track} />
-      </Box>
-    </Flex>
-  );
+  if (screen?.subscreen_caption === "horizontal") {
+    return (
+      <Flex
+        h="100%"
+        w="100%"
+        justify="space-between"
+        direction="column"
+        overflow="hidden"
+      >
+        <Box w="100%" h="30%" overflow="hidden">
+          {infoMode === "announcement" ? (
+            <SubScreenAnnouncementsView track={track} />
+          ) : null}
+          {infoMode === "lightning_timer" && timer ? (
+            <SubScreenLightningTimerView timer={timer} />
+          ) : null}
+          {infoMode === "caption" ? (
+            <SubScreenCaptionView track={track} />
+          ) : null}
+        </Box>
+        <Box w="100%" h="10%" overflow="hidden">
+          <SubScreenChatHeader />
+        </Box>
+        <Box w="100%" flexGrow={2}>
+          <SubScreenChatView track={track} />
+        </Box>
+      </Flex>
+    );
+  } else {
+    return (
+      <Flex
+        h="100%"
+        w="100%"
+        justify="space-between"
+        direction="row"
+        overflow="hidden"
+      >
+        <Box w="65%" h="100%" overflow="hidden">
+          {infoMode === "announcement" ? (
+            <SubScreenAnnouncementsView track={track} />
+          ) : null}
+          {infoMode === "lightning_timer" && timer ? (
+            <SubScreenLightningTimerView timer={timer} />
+          ) : null}
+          {infoMode === "caption" ? (
+            <SubScreenCaptionView
+              fontSize="1.9vw"
+              lineHeight="2.2vw"
+              track={track}
+            />
+          ) : null}
+        </Box>
+        <Box w="50%" flexGrow={2}>
+          <Flex direction="column" h="100%">
+            <Box flexGrow={2}>
+              <SubScreenChatView track={track} />
+            </Box>
+            <Box h="5vw">
+              <SubScreenChatHeader />
+            </Box>
+          </Flex>
+        </Box>
+      </Flex>
+    );
+  }
 };
 
 export default SubScreenPage;

@@ -20,11 +20,20 @@ import {
 
 export type Props = {
   track: TrackSlug;
+
+  fontWeight?: string;
+  fontSize?: string;
+  lineHeight?: string;
 };
 
 const CAPTION_BACKTRACK = 50;
 
-export const TrackCaption: React.FC<Props> = ({ track }) => {
+export const TrackCaption: React.FC<Props> = ({
+  track,
+  fontWeight,
+  fontSize,
+  lineHeight,
+}) => {
   const apictx = useApiContext(false);
   const { data: screen } = Api.useScreenControl(apictx, track);
   const hidePartial = screen?.subscreen_caption_hide_partial;
@@ -40,6 +49,9 @@ export const TrackCaption: React.FC<Props> = ({ track }) => {
             track={track}
             captions={captions}
             hidePartial={hidePartial}
+            fontWeight={fontWeight}
+            fontSize={fontSize}
+            lineHeight={lineHeight}
           />
         )}
       />
@@ -51,7 +63,17 @@ export const TrackCaptionInner: React.FC<{
   track: TrackSlug;
   captions: CaptionMessage[];
   hidePartial?: boolean;
-}> = ({ captions: origCaptions, hidePartial: origHidePartial }) => {
+
+  fontWeight?: string;
+  fontSize?: string;
+  lineHeight?: string;
+}> = ({
+  captions: origCaptions,
+  hidePartial: origHidePartial,
+  fontWeight,
+  fontSize,
+  lineHeight,
+}) => {
   const box = React.useRef<HTMLDivElement>(null);
   const [searchParams] = useSearchParams();
   const hidePartial = !!(searchParams.get("hide_partial") ?? origHidePartial);
@@ -81,6 +103,9 @@ export const TrackCaptionInner: React.FC<{
         bgColor="#000000"
         px="8px"
         py="12px"
+        fontSize={fontSize}
+        lineHeight={lineHeight}
+        fontWeight={fontWeight}
         css={{
           "&::-webkit-scrollbar": { display: "none" },
           "&": { scrollbarWidth: "none" },
