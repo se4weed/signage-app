@@ -11,9 +11,9 @@ import { useKioskContext } from "./KioskProvider";
 
 const ROTATE_INTERVAL = 12;
 
-export const SubScreenAnnouncementsView: React.FC<{ track: TrackSlug }> = ({
-  track,
-}) => {
+export const SubScreenAnnouncementsView: React.FC<{
+  track: TrackSlug;
+}> = ({}) => {
   const kioskProps = useKioskContext();
   const apictx = useApiContext(false);
   const tick = useTick();
@@ -28,9 +28,10 @@ export const SubScreenAnnouncementsView: React.FC<{ track: TrackSlug }> = ({
       );
       const filteredAnns = venueAnnouncements.filter(
         (v) =>
-          v.applicable_kiosks === undefined ||
-          v.applicable_kiosks === null ||
-          v.applicable_kiosks.indexOf(kioskProps.kind) >= 0
+          (v.applicable_kiosks === undefined ||
+            v.applicable_kiosks === null ||
+            v.applicable_kiosks.indexOf(kioskProps.kind) >= 0) &&
+          v.enabled
       );
       retval.push(...filteredAnns);
       console.debug(
