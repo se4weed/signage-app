@@ -76,7 +76,7 @@ export const SubScreenInner: React.FC = () => {
     return "announcement";
   })();
 
-  if (screen?.subscreen_caption === "horizontal") {
+  if (screen?.subscreen_layout === "horizontal") {
     return (
       <Flex
         h="100%"

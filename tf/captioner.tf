@@ -14,7 +14,7 @@ data "external" "captioner-userdata" {
 resource "aws_instance" "captioner" {
   count         = var.captioner_enabled ? 1 : 0
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t4g.micro"
+  instance_type = "t4g.medium"
   subnet_id     = var.captioner_params.ec2_subnet_id
 
   vpc_security_group_ids = var.captioner_params.ec2_security_group_ids
