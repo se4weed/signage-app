@@ -60,6 +60,16 @@ class Refiner
     end
 
     remainder = sentences.pop #if !sentences.empty? && !sentences.last.match?(/(?:[^\d]\.|[\?!])\s*\z/)
+    if remainder && remainder.size > 100
+      words = remainder.split(/\s+/)
+      new_sentence = String.new
+      until new_sentence.size > 100
+        new_sentence << "#{words.shift} "
+      end
+      sentences.push new_sentence.strip
+      remainder = words.join(' ')
+    end
+
     unless is_partial
       sentences.push(remainder) if remainder
       remainder = nil
