@@ -108,6 +108,8 @@ export function guardScreenViewKind(from: string): ScreenViewKind {
   return isScreenViewKind(from) ? from : "unknown";
 }
 
+export type SubscreenLayout = "vertical" | "horizontal";
+
 export type ScreenControlFull = {
   track: TrackSlug;
   mode: ScreenMode;
@@ -115,6 +117,8 @@ export type ScreenControlFull = {
   main_caption?: CaptionSource;
   subscreen_caption?: CaptionSource;
   subscreen_caption_hide_partial?: boolean;
+
+  subscreen_layout: SubscreenLayout;
 
   rotated_views: ScreenViewKind[];
 
@@ -180,6 +184,8 @@ function dynamodbScreenControl(
       | undefined,
     subscreen_caption_hide_partial:
       possibleItem?.subscreen_caption_hide_partial?.BOOL ?? false,
+    subscreen_layout: (possibleItem?.subscreen_layout?.S ??
+      "horizontal") as SubscreenLayout,
 
     updated_at: Number(possibleItem?.updated_at?.N ?? 0),
   };
@@ -657,7 +663,7 @@ export const Api = {
         TableName: aws.config.dynamodb_table_name,
         Key: { pk: { S: pk }, sk: { S: sk } },
         UpdateExpression:
-          "set #track = :track, #mode = :mode, #rotated_views = :rotated_views, #show_sponsors = :show_sponsors, #intermission = :intermission, #message = :message, #lightning_timer = :lightning_timer, #main_caption = :main_caption, #subscreen_caption = :subscreen_caption, #subscreen_caption_hide_partial = :subscreen_caption_hide_partial, #updated_at = :updated_at",
+          "set #track = :track, #mode = :mode, #rotated_views = :rotated_views, #show_sponsors = :show_sponsors, #intermission = :intermission, #message = :message, #lightning_timer = :lightning_timer, #main_caption = :main_caption, #subscreen_caption = :subscreen_caption, #subscreen_caption_hide_partial = :subscreen_caption_hide_partial, #subscreen_layout = :subscreen_layout, #updated_at = :updated_at",
         ExpressionAttributeNames: {
           "#track": "track",
           "#mode": "mode",
@@ -669,6 +675,7 @@ export const Api = {
           "#main_caption": "main_caption",
           "#subscreen_caption": "subscreen_caption",
           "#subscreen_caption_hide_partial": "subscreen_caption_hide_partial",
+          "#subscreen_layout": "subscreen_layout",
           "#updated_at": "updated_at",
         },
         ExpressionAttributeValues: {
@@ -715,6 +722,7 @@ export const Api = {
           ":subscreen_caption_hide_partial": {
             BOOL: !!value.subscreen_caption_hide_partial,
           },
+          ":subscreen_layout": { S: value.subscreen_layout ?? "horizontal" },
           ":updated_at": { N: dayjs().unix().toString() },
         },
       })

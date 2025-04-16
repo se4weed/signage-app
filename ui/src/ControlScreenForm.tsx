@@ -38,6 +38,7 @@ import {
 import {
   Api,
   CaptionSource,
+  SubscreenLayout,
   ScreenControl,
   ScreenControlFull,
   ScreenMode,
@@ -56,6 +57,8 @@ type FormData = {
   show_sponsors: boolean;
 
   main_caption: CaptionSource;
+
+  subscreen_layout: SubscreenLayout;
   subscreen_caption: "" | "off" | CaptionSource;
   subscreen_caption_hide_partial: boolean;
 
@@ -86,6 +89,8 @@ function serverDataToFormData(input: ScreenControl): FormData {
     show_sponsors: input.show_sponsors,
 
     main_caption: input.main_caption ?? "refiner",
+
+    subscreen_layout: input.subscreen_layout ?? "horizontal",
     subscreen_caption: input.subscreen_caption ?? "off",
     subscreen_caption_hide_partial:
       input.subscreen_caption_hide_partial ?? false,
@@ -115,6 +120,7 @@ function formDataToInput(
     show_sponsors: form.show_sponsors,
     intermission: form.intermission,
     main_caption: form.main_caption,
+    subscreen_layout: form.subscreen_layout,
     subscreen_caption:
       form.subscreen_caption === "off" || form.subscreen_caption === ""
         ? undefined
@@ -218,6 +224,13 @@ export const ControlScreenForm: React.FC<{
               </TabPanels>
             </Tabs>
 
+            <FormControl>
+              <FormLabel>Subscreen Layout</FormLabel>
+              <Select {...register("subscreen_layout")}>
+                <option value="horizontal">horizontal</option>
+                <option value="vertical">vertical</option>
+              </Select>
+            </FormControl>
             <FormControl>
               <FormLabel>Subscreen Caption</FormLabel>
               <Select {...register("subscreen_caption")}>
