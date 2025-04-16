@@ -113,8 +113,14 @@ export const TrackCaptionInner: React.FC<{
         ref={box}
       >
         <Text color="#FFFFFF">
-          {captions.map((v) => (
-            <Text as="span" key={v.sequence_id}>
+          {captions.map((v, i) => (
+            <Text
+              as="span"
+              fontWeight={
+                hidePartial && i === captions.length - 1 ? 600 : "inherit"
+              }
+              key={v.sequence_id}
+            >
               {v.transcript}{" "}
             </Text>
           ))}
