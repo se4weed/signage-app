@@ -63,7 +63,8 @@ class Refiner
     if remainder && remainder.size > 100
       words = remainder.split(/\s+/)
       new_sentence = String.new
-      until new_sentence.size > 100
+      limit = 100 * (remainder.size / 100)
+      until new_sentence.size > limit
         new_sentence << "#{words.shift} "
       end
       sentences.push new_sentence.strip
