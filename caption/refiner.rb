@@ -174,9 +174,23 @@ class RefineBackend
     @ths = threads.times.map do
       Thread.new do
         while item = @queue.pop
-          process(item)
+          handle_item(item) 
         end
       end.tap { _1.abort_on_exception = true }
+    end
+  end
+
+  private def handle_item(item)
+    retries = 0
+    begin
+      process(item)
+    rescue => e
+      warn e.full_message
+      retries += 1
+      if retries < 2
+        sleep 2
+        retry
+      end
     end
   end
 
