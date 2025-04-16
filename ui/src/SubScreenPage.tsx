@@ -67,12 +67,10 @@ export const SubScreenInner: React.FC = () => {
   const timer = useLightningTimer(screen?.lightning_timer);
 
   const infoMode = ((): InfoMode => {
+    if (searchParams.has("force_caption")) return "caption";
     if (timer?.shouldVisible) return "lightning_timer";
     if (screen?.intermission) return "announcement";
-    if (
-      screen?.subscreen_caption &&
-      (currentSession !== undefined || searchParams.has("force_caption"))
-    ) {
+    if (screen?.subscreen_caption && currentSession !== undefined) {
       return "caption";
     }
     return "announcement";
