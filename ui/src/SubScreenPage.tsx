@@ -67,8 +67,8 @@ export const SubScreenInner: React.FC = () => {
   const timer = useLightningTimer(screen?.lightning_timer);
 
   const infoMode = ((): InfoMode => {
-    if (searchParams.has("force_caption")) return "caption";
     if (timer?.shouldVisible) return "lightning_timer";
+    if (searchParams.has("force_caption")) return "caption";
     if (screen?.intermission) return "announcement";
     if (screen?.subscreen_caption && currentSession !== undefined) {
       return "caption";
@@ -91,9 +91,7 @@ export const SubScreenInner: React.FC = () => {
         {infoMode === "lightning_timer" && timer ? (
           <SubScreenLightningTimerView timer={timer} />
         ) : null}
-        {infoMode === "caption" && timer ? (
-          <SubScreenCaptionView track={track} />
-        ) : null}
+        {infoMode === "caption" ? <SubScreenCaptionView track={track} /> : null}
       </Box>
       <Box w="100%" h="10%" overflow="hidden">
         <SubScreenChatHeader />
