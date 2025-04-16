@@ -122,8 +122,8 @@ export const SubScreenInner: React.FC = () => {
           ) : null}
           {infoMode === "caption" ? (
             <SubScreenCaptionView
-              fontSize="1.9vw"
-              lineHeight="2.2vw"
+              fontSize="2.7vw"
+              lineHeight="3.2vw"
               track={track}
             />
           ) : null}
