@@ -54,7 +54,7 @@ export const TrackCaptionInner: React.FC<{
 }> = ({ captions: origCaptions, hidePartial: origHidePartial }) => {
   const box = React.useRef<HTMLDivElement>(null);
   const [searchParams] = useSearchParams();
-  const hidePartial = !(searchParams.get("hide_partial") ?? origHidePartial);
+  const hidePartial = !!(searchParams.get("hide_partial") ?? origHidePartial);
 
   const captions = hidePartial
     ? origCaptions.filter((v) => !v.is_partial)
