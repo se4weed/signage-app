@@ -1,13 +1,16 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { Flex, Box } from "@chakra-ui/react";
 import { AspectRatio } from "@chakra-ui/react";
 
 import Api from "./Api";
+import { ConferenceSession, TrackSlug } from "./Api";
 import { ScreenColors } from "./theme";
 
 import { useKioskContext } from "./KioskProvider";
 import { TickProvider } from "./TickProvider";
+import { useTick } from "./TickProvider";
 import { useApiContext } from "./ApiContext";
 import { useLightningTimer } from "./LightningTimer";
 
@@ -39,17 +42,39 @@ export const SubScreenPage: React.FC = () => {
 
 type InfoMode = "announcement" | "lightning_timer" | "caption";
 
+function useCurrentSession(track: TrackSlug): ConferenceSession | undefined {
+  const apictx = useApiContext(false);
+  const tick = useTick();
+  const { data: conferenceSessions } = Api.useConferenceSessions(apictx);
+
+  if (!conferenceSessions) return undefined;
+  if (!apictx) return undefined;
+
+  const trackSessions = conferenceSessions.tracks.get(track) ?? [];
+  const session = trackSessions.find(
+    (s) => s.starts_at <= tick.unix() && tick.unix() <= s.ends_at
+  );
+  return session;
+}
+
 export const SubScreenInner: React.FC = () => {
   const { track } = useKioskContext();
   const apictx = useApiContext(false);
   const { data: screen } = Api.useScreenControl(apictx, track);
 
+  const [searchParams] = useSearchParams();
+  const currentSession = useCurrentSession(track);
   const timer = useLightningTimer(screen?.lightning_timer);
 
   const infoMode = ((): InfoMode => {
     if (timer?.shouldVisible) return "lightning_timer";
-    if (screen?.subscreen_caption) return "caption";
     if (screen?.intermission) return "announcement";
+    if (
+      screen?.subscreen_caption &&
+      (currentSession !== undefined || searchParams.has("force_caption"))
+    ) {
+      return "caption";
+    }
     return "announcement";
   })();
 
