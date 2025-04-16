@@ -114,6 +114,7 @@ export type ScreenControlFull = {
 
   main_caption?: CaptionSource;
   subscreen_caption?: CaptionSource;
+  subscreen_caption_hide_partial?: boolean;
 
   rotated_views: ScreenViewKind[];
 
@@ -177,6 +178,8 @@ function dynamodbScreenControl(
     subscreen_caption: (possibleItem?.subscreen_caption?.S ?? undefined) as
       | CaptionSource
       | undefined,
+    subscreen_caption_hide_partial:
+      possibleItem?.subscreen_caption_hide_partial?.BOOL ?? false,
 
     updated_at: Number(possibleItem?.updated_at?.N ?? 0),
   };
@@ -654,7 +657,7 @@ export const Api = {
         TableName: aws.config.dynamodb_table_name,
         Key: { pk: { S: pk }, sk: { S: sk } },
         UpdateExpression:
-          "set #track = :track, #mode = :mode, #rotated_views = :rotated_views, #show_sponsors = :show_sponsors, #intermission = :intermission, #message = :message, #lightning_timer = :lightning_timer, #main_caption = :main_caption, #subscreen_caption = :subscreen_caption, #updated_at = :updated_at",
+          "set #track = :track, #mode = :mode, #rotated_views = :rotated_views, #show_sponsors = :show_sponsors, #intermission = :intermission, #message = :message, #lightning_timer = :lightning_timer, #main_caption = :main_caption, #subscreen_caption = :subscreen_caption, #subscreen_caption_hide_partial = :subscreen_caption_hide_partial, #updated_at = :updated_at",
         ExpressionAttributeNames: {
           "#track": "track",
           "#mode": "mode",
@@ -665,6 +668,7 @@ export const Api = {
           "#lightning_timer": "lightning_timer",
           "#main_caption": "main_caption",
           "#subscreen_caption": "subscreen_caption",
+          "#subscreen_caption_hide_partial": "subscreen_caption_hide_partial",
           "#updated_at": "updated_at",
         },
         ExpressionAttributeValues: {
@@ -708,6 +712,9 @@ export const Api = {
           ":subscreen_caption": value.subscreen_caption
             ? { S: value.subscreen_caption }
             : { NULL: true },
+          ":subscreen_caption_hide_partial": {
+            BOOL: !!value.subscreen_caption_hide_partial,
+          },
           ":updated_at": { N: dayjs().unix().toString() },
         },
       })

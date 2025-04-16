@@ -57,6 +57,7 @@ type FormData = {
 
   main_caption: CaptionSource;
   subscreen_caption: "" | "off" | CaptionSource;
+  subscreen_caption_hide_partial: boolean;
 
   intermission: boolean;
 
@@ -86,6 +87,8 @@ function serverDataToFormData(input: ScreenControl): FormData {
 
     main_caption: input.main_caption ?? "refiner",
     subscreen_caption: input.subscreen_caption ?? "off",
+    subscreen_caption_hide_partial:
+      input.subscreen_caption_hide_partial ?? false,
 
     intermission: input.intermission,
 
@@ -116,6 +119,7 @@ function formDataToInput(
       form.subscreen_caption === "off" || form.subscreen_caption === ""
         ? undefined
         : form.subscreen_caption,
+    subscreen_caption_hide_partial: form.subscreen_caption_hide_partial,
     message:
       form.mode === "message" || form.message.heading || form.message.footer
         ? form.message
@@ -221,6 +225,10 @@ export const ControlScreenForm: React.FC<{
                 <option value="refiner">Refiner</option>
                 <option value="transcribe">Transcribe</option>
               </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Subscreen Caption hides partial result</FormLabel>
+              <Checkbox {...register("subscreen_caption_hide_partial")} />
             </FormControl>
             <FormControl>
               <FormLabel>Mainscreen Caption</FormLabel>

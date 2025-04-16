@@ -27,6 +27,7 @@ const CAPTION_BACKTRACK = 50;
 export const TrackCaption: React.FC<Props> = ({ track }) => {
   const apictx = useApiContext(false);
   const { data: screen } = Api.useScreenControl(apictx, track);
+  const hidePartial = screen?.subscreen_caption_hide_partial;
 
   if (!screen) return <Skeleton h="100%" w="100%" />;
   return (
@@ -35,7 +36,11 @@ export const TrackCaption: React.FC<Props> = ({ track }) => {
         track={track}
         source={screen.subscreen_caption ?? "refiner"}
         render={(captions) => (
-          <TrackCaptionInner track={track} captions={captions} />
+          <TrackCaptionInner
+            track={track}
+            captions={captions}
+            hidePartial={hidePartial}
+          />
         )}
       />
     </>
@@ -45,10 +50,11 @@ export const TrackCaption: React.FC<Props> = ({ track }) => {
 export const TrackCaptionInner: React.FC<{
   track: TrackSlug;
   captions: CaptionMessage[];
-}> = ({ captions: origCaptions }) => {
+  hidePartial?: boolean;
+}> = ({ captions: origCaptions, hidePartial: origHidePartial }) => {
   const box = React.useRef<HTMLDivElement>(null);
   const [searchParams] = useSearchParams();
-  const hidePartial = !!searchParams.get("hide_partial");
+  const hidePartial = !(searchParams.get("hide_partial") ?? origHidePartial);
 
   const captions = hidePartial
     ? origCaptions.filter((v) => !v.is_partial)
