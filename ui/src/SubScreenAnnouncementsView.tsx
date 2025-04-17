@@ -84,7 +84,7 @@ export const SubScreenAnnouncementsView: React.FC<{
                 value={page.url}
                 level={"M"}
                 includeMargin={true}
-                size={screen?.subscreen_layout === "horizontal" ? 300 : 200}
+                size={screen?.subscreen_layout === "horizontal" ? 300 : 300}
               />
             </Box>
           </>
