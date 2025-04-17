@@ -13,11 +13,12 @@ const ROTATE_INTERVAL = 12;
 
 export const SubScreenAnnouncementsView: React.FC<{
   track: TrackSlug;
-}> = ({}) => {
+}> = ({ track }) => {
   const kioskProps = useKioskContext();
   const apictx = useApiContext(false);
   const tick = useTick();
   const { data: venueAnnouncements } = Api.useVenueAnnouncements(apictx);
+  const { data: screen } = Api.useScreenControl(apictx, track);
 
   const pages = useMemo(() => {
     const retval: VenueAnnouncement[] = [];
@@ -64,7 +65,12 @@ export const SubScreenAnnouncementsView: React.FC<{
 
   return (
     <React.Suspense fallback={<Skeleton w="100%" h="100%" />}>
-      <Flex w="100%" h="100%" direction="row" justify="space-between">
+      <Flex
+        w="100%"
+        h="100%"
+        direction={screen?.subscreen_layout === "horizontal" ? "row" : "column"}
+        justify="space-between"
+      >
         <Box fontSize="3.6vw" w="100%" h="100%">
           {returnToBr(page.content)}
         </Box>
@@ -78,7 +84,7 @@ export const SubScreenAnnouncementsView: React.FC<{
                 value={page.url}
                 level={"M"}
                 includeMargin={true}
-                size={300}
+                size={screen?.subscreen_layout === "horizontal" ? 300 : 200}
               />
             </Box>
           </>
