@@ -4,7 +4,7 @@ resource "aws_lambda_function" "iot-handler" {
   filename         = "${path.module}/iot_handler.zip"
   source_code_hash = data.archive_file.iot_handler.output_base64sha256
   handler          = "iot_handler.handle"
-  runtime          = "ruby3.2"
+  runtime          = "ruby3.4"
   architectures    = ["arm64"]
 
   role = aws_iam_role.IotHandler.arn
