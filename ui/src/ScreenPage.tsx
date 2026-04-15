@@ -85,7 +85,7 @@ export const IntermissionScreenInner: React.FC = () => {
           <NahaThemedFillerPaddingX mode={screen.mode} />
         ) : null}
         {screen.mode === "filler" ? (
-          <Box w="100%" h="100%" bgColor={ScreenColors.accent}>
+          <Box w="100%" h="100%">
             <ScreenHeroFiller />
           </Box>
         ) : (
@@ -112,14 +112,14 @@ export const IntermissionScreenInner: React.FC = () => {
         ) : null}
       </Flex>
       <>
-        {/* Bottom-left 'RubyKaigi 2025' logo */}
+        {/* Bottom-left 'RubyKaigi 2026' logo */}
         <Box
           display={screen.mode === "filler" ? "none" : "block"}
           position="absolute"
-          top="52vw"
-          left="3vw"
+          top="51.15vw"
+          left="2vw"
           w="auto"
-          h="3vw"
+          h="5.1vw"
           css={{
             "& svg": { height: "100%", width: "auto" },
             "& img": { height: "100%", width: "auto" },
