@@ -15,6 +15,7 @@ export const ControlNavbar: React.FC = () => {
       h="56px"
       px="15px"
       bgColor={Colors.bg}
+      color={Colors.navText}
     >
       <HStack spacing="14px">
         <Link as={RouterLink} to="/control/screens">

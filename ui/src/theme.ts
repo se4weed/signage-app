@@ -26,6 +26,7 @@ export const Colors = {
   textDefault: "#333333", // 2023
   textAccent: accent,
   textMuted: "#7d7167", // 2023
+  navText: "#ffffff", // 2026
 
   border: "#DFDFDF",
   chatBorder: "#CED4DA", // TODO:
