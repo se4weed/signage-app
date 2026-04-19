@@ -10,16 +10,18 @@ export const ScreenHeroFiller: React.FC = () => {
       h="100%"
       css={{
         "&": {
-          backgroundImage: `url(/bg.webp?p=rk25)`,
+          backgroundImage: `url(/bg.webp?p=rk26)`,
           backgroundSize: "cover",
           backgroundPosition: "center",
+          border: "solid white 2.7vh",
+          borderRadius: "4vh"
         },
-        "& svg": { height: "27vw", width: "auto" },
-        "& img": { height: "27vw", width: "auto" },
+        "& svg": { height: "31vw", width: "auto" },
+        "& img": { height: "31vw", width: "auto" },
       }}
     >
       <Center w="100%" h="100%">
-        <Image src={`/herologo.svg?p=rk25`} />
+        <Image src={`/herologo.svg?p=rk26`} />
       </Center>
     </Box>
   );

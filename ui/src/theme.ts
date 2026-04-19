@@ -17,7 +17,7 @@ export const Colors = {
 
   controlBg: "#f8f8f8",
   backgroundColor: "#f8f8f8",
-  bg: "#fd4d00", // 2025 red
+  bg: "#893D24", // 2026 color/primary brown
   secondary: "#7C757D",
   secondaryText: "#767077",
 
@@ -26,6 +26,7 @@ export const Colors = {
   textDefault: "#333333", // 2023
   textAccent: accent,
   textMuted: "#7d7167", // 2023
+  navText: "#ffffff", // 2026
 
   border: "#DFDFDF",
   chatBorder: "#CED4DA", // TODO:
@@ -43,7 +44,7 @@ export const Colors = {
 };
 
 export const Fonts = {
-  heading: "Lexend",
+  heading: "Outfit",
   body: "Roboto",
 };
 
@@ -126,7 +127,7 @@ export const theme = extendTheme({
 });
 
 const screenMain = "#000000"; // 2025 main
-const screenAccent = "#fd4d00"; // 2025 red
+const screenAccent = "#893D24" // 2026 color/primary brown
 export const ScreenColors = {
   ...Colors,
   main: screenMain, // 2024
@@ -135,7 +136,7 @@ export const ScreenColors = {
 };
 export const ScreenFonts = {
   ...Fonts,
-  heading: "Lexend", // 2025
-  body: "Lexend", // 2025
-  timer: "Lexend", // 2025
+  heading: "Outfit", // 2026
+  body: "Outfit", // 2026
+  timer: "Outfit", // 2026
 };
