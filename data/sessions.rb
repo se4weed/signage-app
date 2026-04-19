@@ -2,15 +2,9 @@ require 'yaml'
 require 'aws-sdk-dynamodb'
 
 TRACKS = {
-  'Open Studio' => :c,
-
   'Large Hall' => :a,
-  'Small Hall' => :b,
-  'Large Studio' => :c,
-
-  'Main Hall' => :a,
-  'Sub Hall' => :b,
-  'Pearls Room' => :c,
+  'Sub Arena' => :b,
+  'Small Hall' => :c,
 }
 
 @dynamodb = Aws::DynamoDB::Client.new

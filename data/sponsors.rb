@@ -9,6 +9,7 @@ updated_at = Time.now.to_i
 touched_items = {}
 
 sponsor_data = YAML.load(File.read(yml_path))
+sponsor_data.delete('_events')
 plans = sponsor_data.each_value.select { |plan| %w(ruby platinum gold).include?(plan.fetch(:base_plan)) }
 eligible_sponsors = plans.flat_map{ |_| _.fetch(:plans).each_value.flat_map { |__| __.fetch(:sponsors) } }
 
@@ -22,7 +23,7 @@ eligible_sponsors.each_with_index do |sponsor, order_index|
     id:,
     plan: sponsor.fetch(:base_plan),
     name: sponsor.fetch(:name),
-    avatar_url: "https://rubykaigi.org/2025/images/sponsors/#{sponsor.fetch(:asset_file_id)}@3x.png",
+    avatar_url: "https://rubykaigi.org/2026/images/sponsors/#{sponsor.fetch(:asset_file_id)}@3x.png",
     order_index:,
     updated_at:,
   }
