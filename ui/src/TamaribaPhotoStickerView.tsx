@@ -16,7 +16,7 @@ export const TamaribaPhotoStickerView: React.FC = () => {
   const { data: manifest, error } = useSWR<Manifest>(
     `${PHOTOS_BASE_PATH}manifest.json`,
     (url) => fetch(url).then((res) => res.json()),
-    { revalidateOnFocus: false, refreshInterval: 60_000 }
+    { revalidateOnFocus: false }
   );
 
   const tick = useTick();
